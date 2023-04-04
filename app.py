@@ -1,14 +1,15 @@
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
+from sklearn.model_selection import train_test_split, cross_val_score
 import streamlit as st
 
 #### Page Config ###
 st.set_page_config(
-    page_title = "Customer Classifier",
-    page_icon = "https://miro.medium.com/v2/resize:fit:2400/1*rGi8_JUoGX0L3W6nivmIAg@2x.png",
+    page_title="Customer Classifier",
+    page_icon="https://static.vecteezy.com/system/resources/previews/007/058/647/original/icon-of-customer-care-suitable-for-design-element-of-customer-service-app-and-user-satisfaction-symbol-free-vector.jpg",
     menu_items={
-        "Get help": "hikmetemreguler@gmail.com",
+        "Get help": "mailto:hikmetemreguler@gmail.com",
         "About": "For More Information\n" + "https://github.com/HikmetEmre/Project_3"
     }
 )
@@ -26,7 +27,7 @@ st.markdown("After the latest developments in the artificial intelligence indust
 st.markdown("In addition, when they have information about a new Customer, they want us to come up with a product that we can predict Customer Profile Value based on this information.")
 st.markdown("*Alright, Let's help them!*")
 
-st.image("https://resources.pollfish.com/wp-content/uploads/2020/11/MARKET_RESEARCH_FOR_REAL_ESTATE_IN_CONTENT_1.png")
+st.image("https://olddognewtricks.com/wp-content/uploads/2019/02/Programmatic-TV-Optimized-Audience-Targeting.png")
 
 #### Header and definition of columns ###
 st.header("META DATA")
@@ -63,16 +64,31 @@ from joblib import load
 
 rndmfrst_model = load('random_forest_model.pkl')
 
-input_df = pd.DataFrame({
-    'Recency': [Recency],
-    'Frequency': [Frequency],
-    'Revenue': [Revenue]
-})
-### Scale the new input data###
-scaler = StandardScaler()
-input_df=scaler.fit_transform(input_df)
+input_df = [[Recency,Frequency,Revenue]]
+    
+### For fit StandartScaler ###
+df=pd.read_csv("your_labeled_data_file.csv")
 
-pred = rndmfrst_model.predict(input_df.values)
+# Define X and y
+X = df[['Recency', 'Frequency', 'Revenue']]
+y = df['Profile']
+
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=8,stratify=y)
+
+# Scale the data
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+
+
+### Scale the new input data###
+
+input_df_scaled = scaler.transform(input_df)
+
+pred = rndmfrst_model.predict(input_df_scaled)
 
 
 #---------------------------------------------------------------------------------------------------------------------
@@ -102,7 +118,7 @@ if st.sidebar.button("Submit"):
     'Prediction': [pred]
     })
 
-    results_df["Prediction"] = results_df["Prediction"].apply(lambda x: str(x))
+   
 
 
     st.table(results_df)
