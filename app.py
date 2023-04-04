@@ -5,8 +5,8 @@ import streamlit as st
 
 #### Page Config ###
 st.set_page_config(
-    page_title="Customer Classifier",
-    page_icon="https://img.freepik.com/premium-vector/customer-service-icon-vector-full-customer-care-service-hand-with-persons-vector-illustration_399089-2810.jpg?w=2000",
+    page_title = "Customer Classifier",
+    page_icon = "https://miro.medium.com/v2/resize:fit:2400/1*rGi8_JUoGX0L3W6nivmIAg@2x.png",
     menu_items={
         "Get help": "hikmetemreguler@gmail.com",
         "About": "For More Information\n" + "https://github.com/HikmetEmre/Project_3"
